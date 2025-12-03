@@ -1,18 +1,31 @@
 cmake_minimum_required(VERSION 3.25)
 project(retro-ticket LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 23)
-find_package(ftxui REQUIRED)
+# VS2022 + vcpkg friendly
+find_package(ftxui CONFIG REQUIRED)
 find_package(Threads REQUIRED)
 
 add_executable(retro-ticket
     retro-ticket.cpp
-    database/database.cpp
-    ui/atm_receipt.cpp
-    ui/dashboard.cpp
-    input/fkey_hook_win32.cpp   # or _x11.cpp on Linux
+    database.cpp
+    atm_receipt.cpp
+    dashboard.cpp
+    fkey_hook_win32.cpp
 )
 
-target_link_libraries(retro-ticket PRIVATE ftxui::screen ftxui::dom ftxui::component Threads::Threads)
-target_compile_options(retro-ticket PRIVATE /W4 /WX)  # -Wall -Wextra -Werror on gcc/clang
-install(TARGETS retro-ticket DESTINATION bin)
+target_link_libraries(retro-ticket PRIVATE
+    ftxui::screen
+    ftxui::dom
+    ftxui::component
+    Threads::Threads
+)
+
+# VS warning level 4
+if(MSVC)
+    target_compile_options(retro-ticket PRIVATE /W4 /WX)
+endif()
+
+# Ctrl-F5 launches full-screen
+set_target_properties(retro-ticket PROPERTIES
+    VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+)
