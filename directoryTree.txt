@@ -1,0 +1,15 @@
+retro-ticket/               ← open THIS folder in VS2022
+│
+├── CMakeLists.txt
+├── retro-ticket.cpp
+├── database.cpp
+├── database.hpp
+├── atm_receipt.cpp
+├── atm_receipt.hpp
+├── dashboard.cpp
+├── dashboard.hpp
+├── fkey_hook.hpp
+├── fkey_hook_win32.cpp   ← Windows build (no Linux file needed)
+├── ticket.hpp
+├── palette.hpp
+└── README.md
